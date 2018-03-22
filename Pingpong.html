@@ -1,0 +1,77 @@
+<canvas id="field" width="640" height="480">
+    <script>
+        
+        set1=set2=40;
+        st=10;
+        hs=100;
+        fx=fy=50;
+        bod=6;
+        sx=sy=4;
+        score1=score2=0;
+        ai=2;
+        
+    window.onload=function(){
+        c=document.getElementById('field');
+        cc=c.getContext('2d');
+        setInterval(update,1000/30);
+        c.addEventListener('mousemove',function(e){
+            set1=e.clientY-hs/2;
+        })
+    }
+    function reset(){
+        fx=c.width/2;
+        fy=c.height/2;
+        sx=-sx;
+        sy=3;
+    }
+    function update(){
+        fx+=sx;
+        fy+=sy;
+        
+        if(fy<0 && sy<0){
+            sy=-sy;
+        }
+        if(fy>c.height && sy>0){
+            sy=-sy;
+        }
+        if(fx<0){
+            if(fy>set1 && fy<set1+hs){
+                sx=-sx;
+                dy=fy-(set1+hs/2);
+                sy=dy*0.3;
+            }
+            else{
+                score2++;
+                reset();
+            }
+        }
+        if(fx>c.width){
+            if(fy>set2 && fy<set2+hs){
+                sx=-sx;
+                dy=fy-(set2+hs/2);
+                sy=dy*0.3;
+            }
+            else{
+                score1++;
+                reset();
+            }
+        }
+        if(set2+hs/2<fy){
+            set2+=ai;
+        }
+        else{
+            set2-=ai;
+        }
+        cc.fillStyle='black';
+        cc.fillRect(0,0,c.width,c.height);
+        cc.fillStyle='white';
+        cc.fillRect(0,set1,st,hs);
+        cc.fillRect(c.width-st,set2,st,hs);
+        cc.fillRect(fx-bod/2,fy-bod/2,bod,bod);
+        cc.fillText(score1,100,100);
+        cc.fillText(score2,c.width-100,100);
+    }
+        
+    </script>
+    
+</canvas>
